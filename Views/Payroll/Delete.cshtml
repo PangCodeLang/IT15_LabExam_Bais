@@ -1,0 +1,24 @@
+@model IT15_LabExam_Bais.Models.PayrollRecord
+
+@{
+    ViewData["Title"] = "Delete Payroll Record";
+}
+
+<h1 class="h3 text-danger">Delete Payroll Record</h1>
+<p>Are you sure you want to delete this payroll record?</p>
+
+<div class="card border-danger mb-3">
+    <div class="card-body">
+        <p class="mb-1"><strong>Payroll ID:</strong> @Model.Id</p>
+        <p class="mb-1"><strong>Employee:</strong> @Model.Employee?.FullName</p>
+        <p class="mb-1"><strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd")</p>
+        <p class="mb-1"><strong>Gross Pay:</strong> @Model.GrossPay.ToString("N2")</p>
+        <p class="mb-0"><strong>Net Pay:</strong> @Model.NetPay.ToString("N2")</p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    <input asp-for="Id" type="hidden" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

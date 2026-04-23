@@ -28,43 +28,57 @@ public static class DbInitializer
         var staffPassword = configuration["SeedAccounts:StaffPassword"] ?? "Staff#123";
         await EnsureUserAsync(userManager, staffEmail, staffPassword, "Staff");
 
-        if (!await context.Students.AnyAsync())
+        if (!await context.Employees.AnyAsync())
         {
-            context.Students.AddRange(
-                new Student
+            var employees = new List<Employee>
+            {
+                new()
                 {
-                    StudentNumber = "2026-0001",
-                    FirstName = "Andrea",
-                    LastName = "Cruz",
-                    Email = "andrea.cruz@example.com",
-                    Course = "BS Information Technology",
-                    YearLevel = 2,
-                    BirthDate = new DateOnly(2005, 3, 12)
+                    FirstName = "Ana",
+                    LastName = "Reyes",
+                    Position = "HR Officer",
+                    Department = "Human Resources",
+                    DailyRate = 1500m
                 },
-                new Student
+                new()
                 {
-                    StudentNumber = "2026-0002",
-                    FirstName = "Marco",
-                    LastName = "Santos",
-                    Email = "marco.santos@example.com",
-                    Course = "BS Computer Science",
-                    YearLevel = 3,
-                    BirthDate = new DateOnly(2004, 10, 4)
-                },
-                new Student
-                {
-                    StudentNumber = "2026-0003",
-                    FirstName = "Leah",
-                    LastName = "Garcia",
-                    Email = "leah.garcia@example.com",
-                    Course = "BS Information Systems",
-                    YearLevel = 1,
-                    BirthDate = new DateOnly(2006, 7, 28)
+                    FirstName = "Mark",
+                    LastName = "Dela Cruz",
+                    Position = "Software Developer",
+                    Department = "IT",
+                    DailyRate = 2200m
                 }
-            );
+            };
 
+            context.Employees.AddRange(employees);
+            await context.SaveChangesAsync();
+
+            var payrollRecords = new List<PayrollRecord>
+            {
+                new()
+                {
+                    EmployeeId = employees[0].Id,
+                    Date = DateTime.Today,
+                    DaysWorked = 10,
+                    Deduction = 500,
+                    GrossPay = 10 * employees[0].DailyRate,
+                    NetPay = (10 * employees[0].DailyRate) - 500
+                },
+                new()
+                {
+                    EmployeeId = employees[1].Id,
+                    Date = DateTime.Today,
+                    DaysWorked = 8,
+                    Deduction = 800,
+                    GrossPay = 8 * employees[1].DailyRate,
+                    NetPay = (8 * employees[1].DailyRate) - 800
+                }
+            };
+
+            context.PayrollRecords.AddRange(payrollRecords);
             await context.SaveChangesAsync();
         }
+
     }
 
     private static async Task EnsureRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)

@@ -225,7 +225,7 @@ public class AccountController(
 
         await userManager.AddToRoleAsync(user, model.Role);
         TempData["SuccessMessage"] = "Account created successfully.";
-        return RedirectToAction("Index", "Students");
+        return RedirectToAction("Index", "Employees");
     }
 
     [HttpPost]

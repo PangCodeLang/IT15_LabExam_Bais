@@ -1,0 +1,23 @@
+@model IT15_LabExam_Bais.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<h1 class="h3 text-danger">Delete Employee</h1>
+<p>Are you sure you want to delete this employee and related payroll records?</p>
+
+<div class="card border-danger mb-3">
+    <div class="card-body">
+        <p class="mb-1"><strong>Employee ID:</strong> @Model.Id</p>
+        <p class="mb-1"><strong>Name:</strong> @Model.FullName</p>
+        <p class="mb-1"><strong>Position:</strong> @Model.Position</p>
+        <p class="mb-0"><strong>Department:</strong> @Model.Department</p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    <input asp-for="Id" type="hidden" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

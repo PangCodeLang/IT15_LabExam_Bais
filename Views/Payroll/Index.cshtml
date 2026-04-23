@@ -1,0 +1,84 @@
+@model IT15_LabExam_Bais.Models.PayrollIndexViewModel
+
+@{
+    ViewData["Title"] = "Payroll";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Payroll</h1>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" asp-route-employeeId="@Model.EmployeeId" class="btn btn-primary">Add Payroll Record</a>
+    }
+</div>
+
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="alert alert-success" role="alert">@successMessage</div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <label class="form-label" for="employeeId">Employee</label>
+        <select class="form-select" id="employeeId" name="employeeId">
+            <option value="">All Employees</option>
+            @foreach (var employee in Model.Employees)
+            {
+                <option value="@employee.Id" selected="@(Model.EmployeeId == employee.Id)">@employee.FullName (@employee.Id)</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-outline-primary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Payroll ID</th>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Days Worked</th>
+                <th>Daily Rate</th>
+                <th>Gross Pay</th>
+                <th>Deduction</th>
+                <th>Net Pay</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.PayrollRecords.Any())
+            {
+                <tr>
+                    <td colspan="9" class="text-center text-muted py-4">No payroll records found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var payroll in Model.PayrollRecords)
+                {
+                    <tr>
+                        <td>@payroll.Id</td>
+                        <td>@payroll.Employee?.FullName</td>
+                        <td>@payroll.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@payroll.DaysWorked</td>
+                        <td>@(payroll.Employee?.DailyRate.ToString("N2") ?? "0.00")</td>
+                        <td>@payroll.GrossPay.ToString("N2")</td>
+                        <td>@payroll.Deduction.ToString("N2")</td>
+                        <td>@payroll.NetPay.ToString("N2")</td>
+                        <td class="text-end">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@payroll.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@payroll.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -3,12 +3,12 @@
 }
 
 <div class="text-center py-5">
-    <h1 class="display-5 fw-bold">IT15 Student Management System</h1>
-    <p class="lead">Manage student profiles with search, filtering, and complete CRUD operations.</p>
+    <h1 class="display-5 fw-bold">Employee and Payroll System</h1>
+    <p class="lead">Manage employee records and payroll transactions with automatic salary computation.</p>
 
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <a asp-controller="Students" asp-action="Index" class="btn btn-primary btn-lg mt-2">Open System</a>
+        <a asp-controller="Employees" asp-action="Index" class="btn btn-primary btn-lg mt-2">Open System</a>
     }
     else
     {

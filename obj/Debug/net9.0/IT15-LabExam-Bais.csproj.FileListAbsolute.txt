@@ -208,3 +208,4 @@ C:\Users\Student\Desktop\IT15-LabExam-Bais\bin\Debug\net9.0\ExcelNumberFormat.dl
 C:\Users\Student\Desktop\IT15-LabExam-Bais\bin\Debug\net9.0\RBush.dll
 C:\Users\Student\Desktop\IT15-LabExam-Bais\bin\Debug\net9.0\SixLabors.Fonts.dll
 C:\Users\Student\Desktop\IT15-LabExam-Bais\bin\Debug\net9.0\System.IO.Packaging.dll
+C:\Users\Student\Desktop\IT15-LabExam-Bais\obj\Debug\net9.0\IT15-LabExam-Bais.sourcelink.json
