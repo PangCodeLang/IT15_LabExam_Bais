@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\IT15-LabExam-Bais.props" />
+</Project>

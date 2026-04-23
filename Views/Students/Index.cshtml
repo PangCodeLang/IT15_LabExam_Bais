@@ -1,0 +1,95 @@
+@model IT15_LabExam_Bais.Models.StudentsIndexViewModel
+
+@{
+    ViewData["Title"] = "Student Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Student Management System</h1>
+    <div class="d-flex gap-2">
+        <a asp-action="Export" asp-route-searchTerm="@Model.SearchTerm" asp-route-courseFilter="@Model.CourseFilter" class="btn btn-outline-success">Export XLSX</a>
+        <a asp-action="Print" asp-route-searchTerm="@Model.SearchTerm" asp-route-courseFilter="@Model.CourseFilter" target="_blank" class="btn btn-outline-secondary">Print</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="AuditLogs" class="btn btn-outline-dark">Audit Logs</a>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">Add Student</a>
+        }
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] is string successMessage)
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text"
+               class="form-control"
+               name="searchTerm"
+               value="@Model.SearchTerm"
+               placeholder="Search by student number, name, email, or course" />
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" name="courseFilter">
+            <option value="">All Courses</option>
+            @foreach (var course in Model.Courses)
+            {
+                <option value="@course" selected="@(course == Model.CourseFilter)">@course</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary w-100">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Student No.</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Year</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Students.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No students found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var student in Model.Students)
+                {
+                    <tr>
+                        <td>@student.StudentNumber</td>
+                        <td>@student.FullName</td>
+                        <td>@student.Email</td>
+                        <td>@student.Course</td>
+                        <td>@student.YearLevel</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-outline-info">View</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@student.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@student.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
